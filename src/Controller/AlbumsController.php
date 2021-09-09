@@ -31,4 +31,24 @@ class AlbumsController extends Controller
 			'albums'=>$albums
 		]);
 	}
+
+
+	public function form(Request $request, Response $response)
+	{
+		$albums = json_decode(file_get_contents(_DIR_ . '/../../data/albums.json'), true);
+
+		$query = $request->getParam('q');
+
+		if($request->isPost()){
+			$albums = array_values(array_filter($albums, function($album) use($query){
+				return strpos($album['title'], $query) !== false or
+				strpos($album['artist'], $query) !== false;
+			}));
+		}
+
+		return $this->render($response, 'form.html', [
+			'query'=>$query,
+			'albums'=>$albums
+		]);
+	}
 }
