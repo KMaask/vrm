@@ -51,4 +51,19 @@ class AlbumsController extends Controller
 			'albums'=>$albums
 		]);
 	}
+
+	//andmete otsing id numbri alusel
+
+	public function details(Request $request, Response $response, $args = [])
+	{
+		$albums = json_decode(file_get_contents(_DIR_ . '/../../data/albums.json'), true);
+
+		$key = array_search($args['id'], array_column($albums, 'id'));
+
+		return $this->render($response, 'details.html', [
+			'album'=>$albums[$key]
+		]);
+	}
+
 }
+?>
